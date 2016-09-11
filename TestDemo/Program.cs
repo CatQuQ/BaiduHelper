@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BaiDuHelper;
-
+using System.Collections.Concurrent;
 
 namespace TestDemo
 {
@@ -9,17 +9,15 @@ namespace TestDemo
     {
         static void Main(string[] args)
         {
-            
-            string bduss =
-                "Q2Z3NNUTZNWDcyRHdsaH5RYzNwaVZwVG5vcDNlenJIaDZmc0tMeGxZeWpTUHRYQVFBQUFBJCQAAAAAAAAAAAEAAACh4JGhwtzUqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKO701eju9NXNm";
-       
-            List<string> tbName = BaiDuProcess.GetAllMyLikeTieBaName(bduss);
+            //string bduss = "BHd1JoMmctbmtHU0N2eUNjaFNpNWh0OTdUblFjdkgyRkpJTUhKNXl4aWV1ZnhYQVFBQUFBJCQAAAAAAAAAAAEAAADbZfEY1ajNvNK7usUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ4s1VeeLNVXcH";
 
-            List<SignResult> signResultList = BaiDuProcess.TieBaSign(tbName,bduss);
+            //ConcurrentBag<string> tbName = BaiDuProcess.GetAllMyLikeTieBaName(bduss);
 
-            signResultList.ForEach(p => Console.WriteLine(p.IsSuccess+" "+p.Msg+" "+p.SignDays+" "+p.SignRank));
-                       
-            Console.ReadKey();
+            //List<SignResult> signResultList = BaiDuProcess.TieBaSign(tbName,bduss);
+
+            //signResultList.ForEach(p => Console.WriteLine(p.IsSuccess+" "+p.Msg+" "+p.SignDays+" "+p.SignRank));
+
+           
         }
     }
 }

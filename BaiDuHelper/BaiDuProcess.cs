@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,9 +47,9 @@ namespace BaiDuHelper
         /// 获取所有当前账号所喜欢(关注)的贴报名
         /// </summary>
         /// <returns>贴吧名集合</returns>
-        public static List<string> GetAllMyLikeTieBaName(string bduss)
+        public static ConcurrentBag<string> GetAllMyLikeTieBaName(string bduss)
         {
-            List<string> tiebaNameList = new List<string>();
+            ConcurrentBag<string> tiebaNameList = new ConcurrentBag<string>();
             //当前页
             int pageIndex = 0;
             //循环获取
@@ -120,7 +121,7 @@ namespace BaiDuHelper
             string json = new StreamReader(CreateHttpWebResponse(req).GetResponseStream()).ReadToEnd();
             SignJson signJson = JsonConvert.DeserializeObject<SignJson>(json);
 
-            
+
             if (signJson.no == 0)
             {
                 signResult.Msg = signJson.data.add_sign_data.errmsg;
@@ -139,16 +140,18 @@ namespace BaiDuHelper
         /// <summary>
         /// 根据贴吧名集合,签到所有贴吧
         /// </summary>
-        public static List<SignResult> TieBaSign(List<string> tiebaNameList, string bduss)
+        public static List<SignResult> TieBaSign(ConcurrentBag<string> tiebaNameList, string bduss)
         {
             List<SignResult> signResultList = new List<SignResult>();
-            foreach (string tiebaName in tiebaNameList)
+
+            Parallel.ForEach(tiebaNameList, p =>
             {
-               signResultList.Add(TieBaSign(tiebaName, bduss));
-            }
+                signResultList.Add(TieBaSign(p, bduss));
+            });
+
             return signResultList;
         }
-
+        
     }
 }
 
