@@ -151,7 +151,41 @@ namespace BaiDuHelper
 
             return signResultList;
         }
-        
+        /// <summary>
+        /// 回帖
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="fid">贴吧名</param>
+        /// <param name="tid">贴id</param>
+        /// <param name="bduss"></param>
+        /// <returns></returns>
+        public static bool TieBaReply(string content, string tiebaName, string tid, string bduss)
+        {
+            string _t = Common.GetTimeStamp();//时间戳
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("co={0}&_t={1}&tag=11&upload_img_info=&fid={2}&src=1&word={3}&tbs={4}&z={5}&lp=6026",
+                HttpUtility.UrlEncode(content), _t, GetFid(tiebaName), HttpUtility.UrlEncode(tiebaName), GetTbs(bduss), tid);
+
+            HttpWebRequest req = CreateHttpWebRequest("http://tieba.baidu.com/mo/q/apubpost?_t=" + _t);
+            req.CookieContainer = CreateBdussCookieContainer(bduss);
+            req.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1";
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.Method = "POST";
+            Byte[] buffer = Encoding.UTF8.GetBytes(sb.ToString());
+            req.GetRequestStream().Write(buffer, 0, buffer.Length);
+
+            string json = new StreamReader(CreateHttpWebResponse(req).GetResponseStream()).ReadToEnd();
+            ReplyJson replyJson = JsonConvert.DeserializeObject<ReplyJson>(json);
+            if (replyJson.no == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 

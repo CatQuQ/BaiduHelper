@@ -63,8 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaiDuProcess.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Fid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reply.cs" />
     <Compile Include="Sign.cs" />
     <Compile Include="SignResult.cs" />
     <Compile Include="Tbs.cs" />
